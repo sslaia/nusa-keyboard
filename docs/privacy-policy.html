@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kebijakan Privasi - Keyboard Nusa</title>
+    <meta name="description" content="Kebijakan Privasi untuk aplikasi Android Keyboard Nusa.">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-color: #4f46e5;
+            --bg-dark: #07090e;
+            --bg-card: #0f131d;
+            --border-color: rgba(255, 255, 255, 0.08);
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --accent-blue: #6366f1;
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            font-family: 'Outfit', sans-serif;
+            line-height: 1.7;
+            overflow-x: hidden;
+            padding-bottom: 60px;
+        }
+
+        /* Ambient background glow */
+        .ambient-glow {
+            position: absolute;
+            top: -200px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 800px;
+            height: 800px;
+            background: radial-gradient(circle, rgba(79, 70, 229, 0.2) 0%, rgba(7, 9, 14, 0) 70%);
+            z-index: -1;
+            pointer-events: none;
+            filter: blur(80px);
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* Header & Nav */
+        header {
+            padding: 20px 0;
+            border-bottom: 1px solid var(--border-color);
+            background: rgba(7, 9, 14, 0.7);
+            backdrop-filter: blur(12px);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            margin-bottom: 60px;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-group {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+        }
+
+        .logo-img {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+        }
+
+        .logo-title {
+            font-size: 1.15rem;
+            font-weight: 800;
+            color: white;
+            letter-spacing: -0.5px;
+        }
+
+        .btn-back {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: var(--transition);
+        }
+
+        .btn-back:hover {
+            color: var(--text-main);
+        }
+
+        /* Policy Content */
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            letter-spacing: -1px;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #ffffff 60%, #818cf8 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .updated-date {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            margin-bottom: 40px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 20px;
+        }
+
+        h2, h3 {
+            font-weight: 700;
+            margin-top: 36px;
+            margin-bottom: 16px;
+            letter-spacing: -0.5px;
+        }
+
+        h2 {
+            font-size: 1.6rem;
+            color: white;
+        }
+
+        h3 {
+            font-size: 1.25rem;
+            color: #c7d2fe;
+        }
+
+        p {
+            color: #cbd5e1;
+            margin-bottom: 20px;
+            font-size: 1.05rem;
+        }
+
+        ul {
+            list-style-type: none;
+            margin-bottom: 24px;
+            padding-left: 0;
+        }
+
+        li {
+            position: relative;
+            padding-left: 20px;
+            margin-bottom: 8px;
+            color: #cbd5e1;
+        }
+
+        li::before {
+            content: "•";
+            color: var(--accent-blue);
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+        }
+
+        a {
+            color: var(--accent-blue);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .footer {
+            margin-top: 60px;
+            padding-top: 30px;
+            border-top: 1px solid var(--border-color);
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="ambient-glow"></div>
+
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <nav>
+                <a href="index.html" class="logo-group">
+                    <img class="logo-img" src="nusa-keyboard-icon.png" alt="Logo Keyboard Nusa">
+                    <span class="logo-title">Keyboard Nusa</span>
+                </a>
+                <a href="index.html" class="btn-back">&larr; Kembali ke Beranda</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container">
+        <h1>Kebijakan Privasi</h1>
+        <div class="updated-date">Terakhir diperbarui: Juni 2026</div>
+
+        <h3>Pendahuluan</h3>
+        <p>Kebijakan privasi ini membantu Anda memahami informasi apa yang kami kumpulkan, bagaimana kami menggunakannya, dan pilihan apa yang Anda miliki.</p>
+        <p>Kami membangun aplikasi Keyboard Nusa sebagai aplikasi gratis. LAYANAN ini disediakan tanpa biaya dan ditujukan untuk digunakan apa adanya.</p>
+        <p>Jika Anda memilih untuk menggunakan Layanan ini, Anda menyetujui pengumpulan dan penggunaan informasi yang berkaitan dengan kebijakan ini. Informasi Pribadi yang kami kumpulkan digunakan untuk menyediakan dan meningkatkan Layanan. Kami tidak akan menggunakan atau membagikan informasi Anda kepada siapa pun kecuali seperti yang dijelaskan dalam Kebijakan Privasi ini.</p>
+        <p>Istilah-istilah yang digunakan dalam Kebijakan Privasi ini memiliki arti yang sama seperti dalam Syarat dan Ketentuan kami, yang dapat diakses di situs web kami, kecuali ditentukan lain dalam Kebijakan Privasi ini.</p>
+
+        <h3>Pengumpulan dan Penggunaan Informasi</h3>
+        <p>Aplikasi ini tidak mengumpulkan informasi apa pun tentang pengguna. Kami tidak mengirimkan atau menyimpan ketukan tombol atau teks yang Anda ketik ke luar perangkat lokal Anda.</p>
+
+        <h3>Cookie</h3>
+        <p>Cookie adalah berkas dengan jumlah data kecil yang biasanya digunakan sebagai pengidentifikasi unik anonim. Cookie dikirim ke peramban Anda dari situs web yang Anda kunjungi dan disimpan di memori internal perangkat Anda.</p>
+        <p>Layanan ini tidak menggunakan "cookie" ini secara eksplisit. Namun, aplikasi dapat menggunakan kode dan pustaka pihak ketiga yang menggunakan "cookie" untuk mengumpulkan informasi dan meningkatkan layanan mereka. Anda memiliki opsi untuk menerima atau menolak cookie ini, dan mengetahui kapan cookie dikirim ke perangkat Anda. Jika Anda memilih untuk menolak cookie kami, Anda mungkin tidak dapat menggunakan beberapa bagian dari Layanan ini.</p>
+
+        <h3>Informasi Lokasi</h3>
+        <p>Aplikasi ini tidak mengumpulkan informasi lokasi apa pun.</p>
+
+        <h3>Informasi Perangkat</h3>
+        <p>Aplikasi ini tidak mengumpulkan informasi dari perangkat Anda.</p>
+
+        <h3>Penyedia Layanan</h3>
+        <p>Kami tidak mempekerjakan perusahaan atau perorangan pihak ketiga untuk memfasilitasi, menyediakan, atau menjalankan Layanan.</p>
+
+        <h3>Keamanan</h3>
+        <p>Kami tidak mengumpulkan informasi apa pun tentang Anda, lokasi Anda, atau perangkat Anda, oleh karena itu tidak ada risiko keamanan terkait penggunaan aplikasi ini.</p>
+
+        <h3>Privasi Anak-anak</h3>
+        <p>Layanan ini tidak ditujukan untuk siapa pun di bawah usia 13 tahun. Kami tidak mengumpulkan informasi identitas pribadi dari anak-anak di bawah 13 tahun.</p>
+
+        <h3>Perubahan pada Kebijakan Privasi Ini</h3>
+        <p>Kami dapat memperbarui Kebijakan Privasi kami dari waktu ke waktu. Oleh karena itu, Anda disarankan untuk meninjau halaman ini secara berkala untuk setiap perubahan. Kami akan memberi tahu Anda tentang perubahan apa pun dengan memposting Kebijakan Privasi baru di halaman ini. Perubahan ini berlaku segera setelah diposting di halaman ini.</p>
+
+        <h3>Hubungi Kami</h3>
+        <p>Jika Anda memiliki pertanyaan atau saran tentang Kebijakan Privasi kami, jangan ragu untuk menghubungi kami.</p>
+        
+        <p>
+            <strong>Informasi Kontak:</strong><br>
+            Email: <a href="mailto:slaia@yahoo.com">slaia@yahoo.com</a>
+        </p>
+
+        <div class="footer">
+            &copy; 2026 Keyboard Nusa. Hak cipta dilindungi undang-undang.
+        </div>
+    </main>
+
+</body>
+</html>

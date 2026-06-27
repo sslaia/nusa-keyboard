@@ -1,0 +1,111 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:background="?attr/colorSurface"
+    android:fitsSystemWindows="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:padding="24dp">
+
+        <!-- App Icon Placeholder -->
+        <ImageView
+            android:id="@+id/app_logo"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_marginBottom="24dp"
+            android:contentDescription="App Logo"
+            android:src="@mipmap/ic_launcher_round" />
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Keyboard Nusa"
+            android:textColor="?attr/colorPrimary"
+            android:textSize="28sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="24dp" />
+
+        <!-- Keyboard Typing Language Selector -->
+        <TextView
+            android:id="@+id/tv_keyboard_lang_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Bahasa Mengetik:"
+            android:textColor="?attr/colorPrimaryVariant"
+            android:textSize="14sp"
+            android:layout_marginBottom="8dp" />
+
+        <RadioGroup
+            android:id="@+id/rg_keyboard_lang"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="32dp">
+
+            <RadioButton
+                android:id="@+id/rb_lang_nias"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Bahasa Nias"
+                android:textColor="?attr/colorPrimary"
+                android:buttonTint="?attr/colorPrimary"
+                android:layout_marginEnd="16dp" />
+
+            <RadioButton
+                android:id="@+id/rb_lang_indo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Bahasa Indonesia"
+                android:textColor="?attr/colorPrimary"
+                android:buttonTint="?attr/colorPrimary" />
+        </RadioGroup>
+
+        <CheckBox
+            android:id="@+id/check_dark_mode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Gunakan Mode Gelap"
+            android:textColor="?attr/colorPrimaryVariant"
+            android:buttonTint="?attr/colorPrimary"
+            android:textSize="18sp"
+            android:layout_marginBottom="24dp" />
+
+        <CheckBox
+            android:id="@+id/check_wiki_mode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Aktifkan Mode Wiki"
+            android:textColor="?attr/colorPrimaryVariant"
+            android:buttonTint="?attr/colorPrimary"
+            android:textSize="18sp"
+            android:checked="true"
+            android:layout_marginBottom="24dp" />
+
+        <Button
+            android:id="@+id/btn_enable_ime"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:text="Aktifkan Keyboard"
+            android:backgroundTint="?attr/colorPrimary"
+            android:textColor="?attr/colorOnPrimary"
+            android:textAllCaps="false"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/tv_footer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="Atur di Pengaturan Android"
+            android:textColor="?attr/colorOnSurface"
+            android:textSize="14sp"
+            android:alpha="0.7" />
+
+    </LinearLayout>
+</ScrollView>

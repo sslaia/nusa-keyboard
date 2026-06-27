@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Keyboard Nusa - Mengetik Pintar Bahasa Indonesia & Daerah</title>
+    <meta name="description"
+        content="Aplikasi keyboard Android untuk sukarelawan Wikipedia di Indonesia dengan usulan kata pintar dua bahasa, tombol huruf khusus, dan mode penyuntingan wiki cepat.">
+    <meta name="keywords" content="Keyboard Nusa, Nusa Keyboard, Android Keyboard, Wikipedia Indonesia, Nias Keyboard, Nusa IME">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <style>
+        :root {
+            --primary-color: #4f46e5;
+            --primary-glow: rgba(79, 70, 229, 0.15);
+            --bg-dark: #07090e;
+            --bg-card: #0f131d;
+            --border-color: rgba(255, 255, 255, 0.08);
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --accent-blue: #6366f1;
+            --accent-glow: rgba(99, 102, 241, 0.2);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            font-family: 'Outfit', sans-serif;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Ambient background glow */
+        .ambient-glow {
+            position: absolute;
+            top: -200px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 800px;
+            height: 800px;
+            background: radial-gradient(circle, rgba(79, 70, 229, 0.3) 0%, rgba(7, 9, 14, 0) 70%);
+            z-index: -1;
+            pointer-events: none;
+            filter: blur(80px);
+        }
+
+        /* Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* Header & Nav */
+        header {
+            padding: 20px 0;
+            border-bottom: 1px solid var(--border-color);
+            background: rgba(7, 9, 14, 0.7);
+            backdrop-filter: blur(12px);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-group {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-img {
+            width: 44px;
+            height: 44px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+        }
+
+        .logo-title {
+            font-size: 1.35rem;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            background: linear-gradient(135deg, #ffffff 50%, #c7d2fe 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 24px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: var(--transition);
+        }
+
+        .nav-links a:hover {
+            color: var(--text-main);
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 80px 0 100px 0;
+            text-align: center;
+            position: relative;
+        }
+
+        .hero-title {
+            font-size: 3.5rem;
+            font-weight: 800;
+            letter-spacing: -1.5px;
+            line-height: 1.15;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #ffffff 50%, #818cf8 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-subtitle {
+            font-size: 1.25rem;
+            color: var(--text-muted);
+            max-width: 680px;
+            margin: 0 auto 36px auto;
+            font-weight: 400;
+        }
+
+        .cta-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            margin-bottom: 60px;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 14px 28px;
+            border-radius: 30px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: var(--transition);
+            font-size: 1rem;
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: #ffffff;
+            box-shadow: 0 4px 20px rgba(79, 70, 229, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(79, 70, 229, 0.5);
+        }
+
+        .btn-primary:hover {
+            background-color: #4338ca;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 24px rgba(79, 70, 229, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-secondary {
+            background-color: rgba(255, 255, 255, 0.05);
+            color: var(--text-main);
+            border: 1px solid var(--border-color);
+        }
+
+        .btn-secondary:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+        }
+
+        /* Feature Graphic mockup */
+        .feature-graphic-container {
+            max-width: 900px;
+            margin: 0 auto;
+            border-radius: 20px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), 0 0 40px rgba(79, 70, 229, 0.1);
+            background-color: var(--bg-card);
+            padding: 10px;
+        }
+
+        .feature-graphic-img {
+            width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 12px;
+        }
+
+        /* Features Section */
+        .features {
+            padding: 100px 0;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .section-tag {
+            color: var(--accent-blue);
+            font-size: 0.9rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 12px;
+            display: inline-block;
+        }
+
+        .section-title {
+            font-size: 2.25rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+        }
+
+        .feature-card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 36px;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-color), var(--accent-blue));
+            opacity: 0;
+            transition: var(--transition);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3), 0 0 20px rgba(79, 70, 229, 0.05);
+            border-color: rgba(79, 70, 229, 0.3);
+        }
+
+        .feature-card:hover::before {
+            opacity: 1;
+        }
+
+        .feature-icon {
+            font-size: 2.5rem;
+            margin-bottom: 24px;
+            display: inline-block;
+        }
+
+        .feature-card-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 14px;
+        }
+
+        .feature-card-desc {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        .feature-card-note {
+            margin-top: 14px;
+            padding: 8px 12px;
+            background: rgba(79, 70, 229, 0.08);
+            border-left: 3px solid var(--primary-color);
+            border-radius: 0 8px 8px 0;
+            font-size: 0.85rem;
+            color: #c7d2fe;
+        }
+
+        /* How to Enable Section */
+        .how-to {
+            padding: 100px 0;
+            border-top: 1px solid var(--border-color);
+            background: linear-gradient(180deg, var(--bg-dark) 0%, rgba(79, 70, 229, 0.04) 50%, var(--bg-dark) 100%);
+        }
+
+        .steps-container {
+            max-width: 700px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .step-item {
+            display: flex;
+            gap: 20px;
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 24px;
+            align-items: center;
+        }
+
+        .step-num {
+            width: 48px;
+            height: 48px;
+            background-color: var(--primary-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.25rem;
+            color: white;
+            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.4);
+            flex-shrink: 0;
+        }
+
+        .step-text h4 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .step-text p {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        /* Footer */
+        footer {
+            border-top: 1px solid var(--border-color);
+            padding: 60px 0 40px 0;
+            text-align: center;
+            background-color: #040508;
+        }
+
+        .footer-logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 24px;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            list-style: none;
+            margin-bottom: 30px;
+        }
+
+        .footer-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: var(--transition);
+        }
+
+        .footer-links a:hover {
+            color: var(--text-main);
+        }
+
+        .copyright {
+            color: #475569;
+            font-size: 0.85rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2.5rem;
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+                max-width: 320px;
+                margin: 0 auto 40px auto;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .nav-links {
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="ambient-glow"></div>
+
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <nav>
+                <div class="logo-group">
+                    <img class="logo-img" src="nusa-keyboard-icon.png" alt="Logo Keyboard Nusa">
+                    <span class="logo-title">Keyboard Nusa</span>
+                </div>
+                <ul class="nav-links">
+                    <li><a href="#features">Fitur</a></li>
+                    <li><a href="#install">Petunjuk Penggunaan</a></li>
+                    <li><a href="privacy-policy.html">Kebijakan Privasi</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="container">
+                <h1 class="hero-title" id="hero_heading">Ketik Cepat & Pintar dalam Berbagai Bahasa</h1>
+                <p class="hero-subtitle">Keyboard Android berfitur lengkap yang dirancang khusus untuk relawan Wikipedia di Indonesia. Dukungan penuh pengetikan Bahasa Indonesia & daerah (Nias), karakter khusus, dan pintasan Wiki instan.</p>
+                <div class="cta-buttons">
+                    <a href="#install" class="btn btn-primary" id="btn_get_started">Aktifkan Sekarang</a>
+                    <a href="privacy-policy.html" class="btn btn-secondary" id="btn_privacy">Kebijakan Privasi</a>
+                </div>
+
+                <div class="feature-graphic-container">
+                    <img class="feature-graphic-img" src="nusa-keyboard_feature-graphic.png"
+                        alt="Tata Letak Keyboard Nusa">
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section class="features" id="features">
+            <div class="container">
+                <div class="section-header">
+                    <span class="section-tag">Fitur Utama</span>
+                    <h2 class="section-title">Produktivitas Menulis Tanpa Batas</h2>
+                </div>
+
+                <div class="features-grid">
+                    <!-- Feature 1 -->
+                    <div class="feature-card" id="card_word_prediction">
+                        <span class="feature-icon">✨</span>
+                        <h3 class="feature-card-title">Kamus & Usulan Kata Pintar</h3>
+                        <p class="feature-card-desc">Dilengkapi dengan usulan kata otomatis dalam <strong>Bahasa Indonesia</strong> dan <strong>Nias (Li Niha)</strong>. Keyboard ini secara dinamis mempelajari kata-kata baru saat Anda mengetik untuk mempercepat penulisan di masa mendatang.
+                        </p>
+                        <p class="feature-card-note">💡 <em>Tip: Nonaktifkan mode Wiki untuk menggunakan kamus prediksi kata.</em></p>
+                    </div>
+
+                    <!-- Feature 2 -->
+                    <div class="feature-card" id="card_wiki_toggle">
+                        <span class="feature-icon">📝</span>
+                        <h3 class="feature-card-title">Pintasan Sintaksis Wikipedia</h3>
+                        <p class="feature-card-desc">Baris akses cepat khusus untuk para kontributor Wikipedia, Wikikamus, dan Wikimedia. Masukkan kode markup seperti <code>[[</code>, <code>]]</code>, <code>{{</code>, <code>}}</code>, dan <code>'''</code> secara instan dengan satu ketukan.</p>
+                    </div>
+
+                    <!-- Feature 3 -->
+                    <div class="feature-card" id="card_special_char">
+                        <span class="feature-icon">⌨️</span>
+                        <h3 class="feature-card-title">Tombol Karakter Khusus Daerah</h3>
+                        <p class="feature-card-desc">Menyediakan tombol bawaan langsung untuk karakter yang sering digunakan dalam penulisan bahasa daerah, seperti huruf <strong>ŵ</strong> dan <strong>ö</strong>, serta karakter aksen lain pada menu tahan lama (long press).</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- How to Enable Section -->
+        <section class="how-to" id="install">
+            <div class="container">
+                <div class="section-header">
+                    <span class="section-tag">Panduan Instalasi</span>
+                    <h2 class="section-title">Cara Mengaktifkan Keyboard Nusa</h2>
+                </div>
+
+                <div class="steps-container">
+                    <div class="step-item" id="step_enable_ime">
+                        <div class="step-num">1</div>
+                        <div class="step-text">
+                            <h4>Aktifkan di Pengaturan Sistem</h4>
+                            <p>Buka aplikasi stelan, ketuk <strong>Aktifkan Keyboard</strong> dan centang atau nyalakan <strong>Nusa Keyboard</strong> di menu input sistem Android Anda.</p>
+                        </div>
+                    </div>
+
+                    <div class="step-item" id="step_switch_ime">
+                        <div class="step-num">2</div>
+                        <div class="step-text">
+                            <h4>Pilih sebagai Metode Masukan Aktif</h4>
+                            <p>Ketuk bidang teks apa saja, usap ke bawah bilah notifikasi atau ketuk ikon keyboard di pojok kanan bawah, lalu pilih <strong>Nusa Keyboard</strong>.</p>
+                        </div>
+                    </div>
+
+                    <div class="step-item" id="step_enjoy">
+                        <div class="step-num">3</div>
+                        <div class="step-text">
+                            <h4>Mulai Mengetik & Sesuaikan</h4>
+                            <p>Buka aplikasi Nusa Keyboard untuk menyetel default layout Anda (Indonesia atau Nias). Di dalam keyboard, tekan ikon Globe (🌐) untuk mengganti bahasa mengetik secara cepat.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-logo">
+                <img class="logo-img" src="nusa-keyboard-icon.png" alt="Logo Keyboard Nusa">
+                <span class="logo-title">Keyboard Nusa</span>
+            </div>
+            <ul class="footer-links">
+                <li><a href="#features">Fitur</a></li>
+                <li><a href="#install">Petunjuk Penggunaan</a></li>
+                <li><a href="privacy-policy.html">Kebijakan Privasi</a></li>
+                <li><a href="mailto:slaia@yahoo.com">Dukungan</a></li>
+            </ul>
+            <p class="copyright">&copy; 2026 Keyboard Nusa. Hak cipta dilindungi undang-undang.</p>
+        </div>
+    </footer>
+
+</body>
+
+</html>
