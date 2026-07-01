@@ -191,6 +191,51 @@
             transform: translateY(-2px);
         }
 
+        .btn-playstore {
+            background-color: #000000;
+            color: #ffffff;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4), 0 0 20px rgba(79, 70, 229, 0.15);
+            padding: 10px 24px !important;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            transition: var(--transition);
+        }
+
+        .btn-playstore:hover {
+            background-color: #05070a;
+            border-color: var(--primary-color);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 24px rgba(79, 70, 229, 0.4);
+        }
+
+        .playstore-icon {
+            width: 22px;
+            height: 22px;
+            flex-shrink: 0;
+        }
+
+        .playstore-text {
+            display: flex;
+            flex-direction: column;
+            line-height: 1.2;
+            text-align: left;
+        }
+
+        .playstore-sub {
+            font-size: 0.6rem;
+            font-weight: 600;
+            letter-spacing: 0.8px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+        }
+
+        .playstore-main {
+            font-size: 0.95rem;
+            font-weight: 700;
+        }
+
         /* Feature Graphic mockup */
         .feature-graphic-container {
             max-width: 900px;
@@ -445,7 +490,21 @@
                 <h1 class="hero-title" id="hero_heading">Ketik Cepat & Pintar dalam Berbagai Bahasa</h1>
                 <p class="hero-subtitle">Keyboard Android berfitur lengkap yang dirancang khusus untuk relawan Wikipedia di Indonesia. Dukungan penuh pengetikan Bahasa Indonesia & daerah (Nias), karakter khusus, dan pintasan Wiki instan.</p>
                 <div class="cta-buttons">
-                    <a href="#install" class="btn btn-primary" id="btn_get_started">Aktifkan Sekarang</a>
+                    <a href="https://play.google.com/store/apps/details?id=io.github.sslaia.nusakeyboard" class="btn btn-playstore" id="btn_playstore" target="_blank" rel="noopener noreferrer">
+                        <svg class="playstore-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 466 511.98">
+                            <g fill-rule="nonzero">
+                                <path fill="#EA4335" d="M199.9 237.8 1.4 470.17c7.22 24.57 30.16 41.81 55.8 41.81 11.16 0 20.93-2.79 29.3-8.37l244.16-139.46L199.9 237.8z"/>
+                                <path fill="#FBBC04" d="m433.91 205.1-104.65-60-111.61 110.22 113.01 108.83 104.64-58.6c18.14-9.77 30.7-29.3 30.7-50.23-1.4-20.93-13.95-40.46-32.09-50.22z"/>
+                                <path fill="#34A853" d="M199.42 273.45 329.27 145.1 87.9 8.37C79.53 2.79 68.36 0 57.2 0 30.7 0 6.98 18.14 1.4 41.86l198.02 231.59z"/>
+                                <path fill="#4285F4" d="M1.39 41.86C0 46.04 0 51.63 0 57.2v397.64c0 5.57 0 9.76 1.4 15.34l216.27-214.86L1.39 41.86z"/>
+                            </g>
+                        </svg>
+                        <div class="playstore-text">
+                            <span class="playstore-sub">DAPATKAN DI</span>
+                            <span class="playstore-main">Google Play</span>
+                        </div>
+                    </a>
+                    <a href="#install" class="btn btn-secondary" id="btn_get_started">Aktifkan Sekarang</a>
                     <a href="privacy-policy.html" class="btn btn-secondary" id="btn_privacy">Kebijakan Privasi</a>
                 </div>
 
