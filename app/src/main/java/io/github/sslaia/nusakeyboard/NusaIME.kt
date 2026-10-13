@@ -4,9 +4,15 @@ import android.content.Context
 import android.content.res.Configuration
 import android.graphics.Color
 import android.graphics.PorterDuff
+import android.graphics.PorterDuffColorFilter
 import android.inputmethodservice.InputMethodService
+import android.os.Build
 import android.os.Handler
 import android.os.Looper
+import android.os.VibrationEffect
+import android.os.Vibrator
+import android.os.VibratorManager
+import android.view.HapticFeedbackConstants
 import android.view.KeyEvent
 import android.view.MotionEvent
 import android.view.View
@@ -44,6 +50,7 @@ class NusaIME : InputMethodService() {
     private var isNumericMode = false
     private var isSymbolsShifted = false
     private var isWikiMode = false
+    private var isHapticEnabled = true
 
     override fun onCreate() {
         super.onCreate()
@@ -72,9 +79,45 @@ class NusaIME : InputMethodService() {
 
     private fun loadSettings() {
         val prefs = getSharedPreferences("nusa_prefs", Context.MODE_PRIVATE)
-        isWikiMode = prefs.getBoolean("wiki_mode", true)
+        isWikiMode = prefs.getBoolean("wiki_mode", false)
+        isHapticEnabled = prefs.getBoolean("haptic_feedback", true)
         val defaultLang = prefs.getString("keyboard_lang", "nias") ?: "nias"
         isNiasMode = (defaultLang == "nias")
+    }
+
+    private fun triggerHapticFeedback(view: View) {
+        if (!isHapticEnabled) return
+        try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                val vibratorManager = getSystemService(Context.VIBRATOR_MANAGER_SERVICE) as? VibratorManager
+                val vibrator = vibratorManager?.defaultVibrator
+                if (vibrator != null && vibrator.hasVibrator()) {
+                    vibrator.vibrate(VibrationEffect.createPredefined(VibrationEffect.EFFECT_CLICK))
+                    return
+                }
+            } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                @Suppress("DEPRECATION")
+                val vibrator = getSystemService(Context.VIBRATOR_SERVICE) as? Vibrator
+                if (vibrator != null && vibrator.hasVibrator()) {
+                    vibrator.vibrate(VibrationEffect.createPredefined(VibrationEffect.EFFECT_CLICK))
+                    return
+                }
+            } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                @Suppress("DEPRECATION")
+                val vibrator = getSystemService(Context.VIBRATOR_SERVICE) as? Vibrator
+                if (vibrator != null && vibrator.hasVibrator()) {
+                    vibrator.vibrate(VibrationEffect.createOneShot(12, VibrationEffect.DEFAULT_AMPLITUDE))
+                    return
+                }
+            }
+        } catch (_: Exception) {
+            // Fallback to view haptic feedback below
+        }
+        @Suppress("DEPRECATION")
+        view.performHapticFeedback(
+            HapticFeedbackConstants.KEYBOARD_TAP,
+            HapticFeedbackConstants.FLAG_IGNORE_GLOBAL_SETTING
+        )
     }
 
     private fun showWikiShortcuts() {
@@ -103,9 +146,10 @@ class NusaIME : InputMethodService() {
             btn.minWidth = 0
             btn.minimumWidth = 0
             
-            btn.background?.mutate()?.setColorFilter(btnBgColor, PorterDuff.Mode.SRC_IN)
+            btn.background?.mutate()?.colorFilter = PorterDuffColorFilter(btnBgColor, PorterDuff.Mode.SRC_IN)
             
             btn.setOnClickListener {
+                triggerHapticFeedback(btn)
                 val ic = currentInputConnection ?: return@setOnClickListener
                 ic.commitText(key, 1)
             }
@@ -141,6 +185,7 @@ class NusaIME : InputMethodService() {
         btnWikiToggle = inputContainer.findViewById(R.id.btn_wiki_toggle)
         
         btnWikiToggle.setOnClickListener {
+            triggerHapticFeedback(btnWikiToggle)
             toggleWikiMode()
         }
 
@@ -191,18 +236,86 @@ class NusaIME : InputMethodService() {
             val code = (parent.tag as? String)?.toInt() ?: 0
             if (code == -5) {
                 setupDeleteButtonRepeat(parent)
+            } else if (code == -101) {
+                setupEmojiButton(parent)
             } else {
-                parent.setOnClickListener {
-                    handleKey(code, it)
-                }
-                if (isSpecialKey(code)) {
-                    parent.setOnLongClickListener {
-                        showLongPressOptions(it, code)
-                        true
-                    }
-                }
+                setupStandardKeyTouch(parent, code)
             }
         }
+    }
+
+    private fun setupEmojiButton(button: Button) {
+        button.setOnTouchListener { v, event ->
+            when (event.actionMasked) {
+                MotionEvent.ACTION_DOWN -> {
+                    v.isPressed = true
+                    triggerHapticFeedback(v)
+                    showEmojiPopup(v)
+                    true
+                }
+                MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
+                    v.isPressed = false
+                    v.performClick()
+                    true
+                }
+                else -> false
+            }
+        }
+    }
+
+    private fun setupStandardKeyTouch(button: Button, code: Int) {
+        val isSpecial = isSpecialKey(code)
+        
+        button.setOnTouchListener(object : View.OnTouchListener {
+            private val handler = Handler(Looper.getMainLooper())
+            private var isLongPressed = false
+            private var startX = 0f
+            private var startY = 0f
+
+            private val longPressRunnable = Runnable {
+                isLongPressed = true
+                triggerHapticFeedback(button)
+                showLongPressOptions(button, code, wasPreCommitted = true)
+            }
+
+            override fun onTouch(v: View, event: MotionEvent): Boolean {
+                when (event.actionMasked) {
+                    MotionEvent.ACTION_DOWN -> {
+                        isLongPressed = false
+                        startX = event.x
+                        startY = event.y
+                        v.isPressed = true
+                        
+                        triggerHapticFeedback(v)
+                        handleKey(code, v)
+                        
+                        if (isSpecial) {
+                            handler.postDelayed(longPressRunnable, 350)
+                        }
+                        return true
+                    }
+                    MotionEvent.ACTION_MOVE -> {
+                        if (isSpecial && !isLongPressed) {
+                            val dx = Math.abs(event.x - startX)
+                            val dy = Math.abs(event.y - startY)
+                            if (dx > 80 || dy > 80) {
+                                handler.removeCallbacks(longPressRunnable)
+                            }
+                        }
+                        return true
+                    }
+                    MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
+                        if (isSpecial) {
+                            handler.removeCallbacks(longPressRunnable)
+                        }
+                        v.isPressed = false
+                        v.performClick()
+                        return true
+                    }
+                }
+                return false
+            }
+        })
     }
 
     private fun setupDeleteButtonRepeat(button: Button) {
@@ -210,16 +323,18 @@ class NusaIME : InputMethodService() {
             private var mHandler: Handler? = null
             private val mAction = object : Runnable {
                 override fun run() {
+                    triggerHapticFeedback(button)
                     handleKey(-5, button)
                     mHandler?.postDelayed(this, 50)
                 }
             }
 
             override fun onTouch(v: View, event: MotionEvent): Boolean {
-                when (event.action) {
+                when (event.actionMasked) {
                     MotionEvent.ACTION_DOWN -> {
                         if (mHandler != null) return true
                         mHandler = Handler(Looper.getMainLooper())
+                        triggerHapticFeedback(button)
                         handleKey(-5, button)
                         mHandler?.postDelayed(mAction, 400)
                         v.isPressed = true
@@ -239,13 +354,13 @@ class NusaIME : InputMethodService() {
     }
 
     private fun isSpecialKey(code: Int): Boolean {
-        // Includes , . a e i o u n s l w emoji
+        // Includes , . a e i o u n s l w
         return code == 44 || code == 46 || 
                code == 97 || code == 101 || code == 105 || code == 111 || code == 117 ||
-               code == 110 || code == 115 || code == 108 || code == 119 || code == -101
+               code == 110 || code == 115 || code == 108 || code == 119
     }
 
-    private fun showLongPressOptions(view: View, code: Int) {
+    private fun showLongPressOptions(view: View, code: Int, wasPreCommitted: Boolean = false) {
         if (code == -101) {
             showEmojiPopup(view)
             return
@@ -272,14 +387,17 @@ class NusaIME : InputMethodService() {
         }
         popupMenu.setOnMenuItemClickListener { item ->
             val char = options[item.itemId]
-            handleLongPressSelection(char)
+            handleLongPressSelection(char, wasPreCommitted)
             true
         }
         popupMenu.show()
     }
 
-    private fun handleLongPressSelection(char: Char) {
+    private fun handleLongPressSelection(char: Char, wasPreCommitted: Boolean = false) {
         val ic = currentInputConnection ?: return
+        if (wasPreCommitted) {
+            ic.deleteSurroundingText(1, 0)
+        }
         var finalChar = char
         if (isCaps && char.isLetter()) {
             finalChar = char.uppercaseChar()
@@ -290,6 +408,7 @@ class NusaIME : InputMethodService() {
             isCaps = false
             updateKeyLabels(keyboardContainer)
         }
+        checkAutoCaps()
     }
 
     private fun updateKeyLabels(parent: View) {
@@ -326,7 +445,7 @@ class NusaIME : InputMethodService() {
                 applyThemeToKeys(parent.getChildAt(i))
             }
         } else if (parent is Button) {
-            parent.background.mutate().setColorFilter(keyColor, PorterDuff.Mode.SRC_IN)
+            parent.background.mutate().colorFilter = PorterDuffColorFilter(keyColor, PorterDuff.Mode.SRC_IN)
             val code = (parent.tag as? String)?.toInt() ?: 0
             if (code == 32) {
                 parent.setTextColor(hintColor)
@@ -514,6 +633,7 @@ class NusaIME : InputMethodService() {
             tv.setPadding(35, 20, 35, 20)
             tv.textSize = 20f
             tv.setOnClickListener {
+                triggerHapticFeedback(tv)
                 val ic = currentInputConnection
                 val originalWord = input.substringAfterLast(' ', input)
                 val isFirstUpper = originalWord.isNotEmpty() && originalWord[0].isUpperCase()
@@ -642,11 +762,11 @@ class NusaIME : InputMethodService() {
         
         if (isWikiMode) {
             btnWikiToggle.text = "Wiki"
-            btnWikiToggle.background?.mutate()?.setColorFilter(activeColor, PorterDuff.Mode.SRC_IN)
+            btnWikiToggle.background?.mutate()?.colorFilter = PorterDuffColorFilter(activeColor, PorterDuff.Mode.SRC_IN)
             btnWikiToggle.setTextColor(activeTextColor)
         } else {
             btnWikiToggle.text = "Wiki"
-            btnWikiToggle.background?.mutate()?.setColorFilter(inactiveColor, PorterDuff.Mode.SRC_IN)
+            btnWikiToggle.background?.mutate()?.colorFilter = PorterDuffColorFilter(inactiveColor, PorterDuff.Mode.SRC_IN)
             btnWikiToggle.setTextColor(textColor)
         }
     }

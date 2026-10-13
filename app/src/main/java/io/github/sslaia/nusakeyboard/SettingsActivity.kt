@@ -22,6 +22,7 @@ class SettingsActivity : AppCompatActivity() {
     private lateinit var rbLangNias: RadioButton
     private lateinit var rbLangIndo: RadioButton
     private lateinit var checkDarkMode: CheckBox
+    private lateinit var checkHapticFeedback: CheckBox
     private lateinit var checkWikiMode: CheckBox
     private lateinit var btnEnable: Button
     private lateinit var tvFooter: TextView
@@ -48,13 +49,15 @@ class SettingsActivity : AppCompatActivity() {
         rbLangNias = findViewById(R.id.rb_lang_nias)
         rbLangIndo = findViewById(R.id.rb_lang_indo)
         checkDarkMode = findViewById(R.id.check_dark_mode)
+        checkHapticFeedback = findViewById(R.id.check_haptic_feedback)
         checkWikiMode = findViewById(R.id.check_wiki_mode)
         btnEnable = findViewById(R.id.btn_enable_ime)
         tvFooter = findViewById(R.id.tv_footer)
 
         // Load saved settings
         checkDarkMode.isChecked = isDarkMode
-        checkWikiMode.isChecked = prefs.getBoolean("wiki_mode", true)
+        checkHapticFeedback.isChecked = prefs.getBoolean("haptic_feedback", true)
+        checkWikiMode.isChecked = prefs.getBoolean("wiki_mode", false)
 
         val keyboardLang = prefs.getString("keyboard_lang", "nias") ?: "nias"
         if (keyboardLang == "nias") {
@@ -82,6 +85,10 @@ class SettingsActivity : AppCompatActivity() {
             recreate()
         }
 
+        checkHapticFeedback.setOnCheckedChangeListener { _, isChecked ->
+            prefs.edit { putBoolean("haptic_feedback", isChecked) }
+        }
+
         checkWikiMode.setOnCheckedChangeListener { _, isChecked ->
             prefs.edit { putBoolean("wiki_mode", isChecked) }
         }
@@ -97,6 +104,7 @@ class SettingsActivity : AppCompatActivity() {
         rbLangNias.text = "Bahasa Nias"
         rbLangIndo.text = "Bahasa Indonesia"
         checkDarkMode.text = "Gunakan Mode Gelap"
+        checkHapticFeedback.text = "Getaran saat tombol ditekan"
         checkWikiMode.text = "Aktifkan Mode Wiki"
         btnEnable.text = "Aktifkan Keyboard"
         tvFooter.text = "Atur di Pengaturan Android"

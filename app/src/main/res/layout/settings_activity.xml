@@ -77,6 +77,17 @@
             android:layout_marginBottom="24dp" />
 
         <CheckBox
+            android:id="@+id/check_haptic_feedback"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Getaran saat tombol ditekan"
+            android:textColor="?attr/colorPrimaryVariant"
+            android:buttonTint="?attr/colorPrimary"
+            android:textSize="18sp"
+            android:checked="true"
+            android:layout_marginBottom="24dp" />
+
+        <CheckBox
             android:id="@+id/check_wiki_mode"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -84,7 +95,7 @@
             android:textColor="?attr/colorPrimaryVariant"
             android:buttonTint="?attr/colorPrimary"
             android:textSize="18sp"
-            android:checked="true"
+            android:checked="false"
             android:layout_marginBottom="24dp" />
 
         <Button

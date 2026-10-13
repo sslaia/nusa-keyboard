@@ -3,9 +3,10 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
+    android:splitMotionEvents="true"
     android:padding="2dp">
 
-    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal">
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:splitMotionEvents="true">
         <Button style="@style/KeyStyle" android:text="~" android:tag="126" android:layout_weight="1"/>
         <Button style="@style/KeyStyle" android:text="`" android:tag="96" android:layout_weight="1"/>
         <Button style="@style/KeyStyle" android:text="|" android:tag="124" android:layout_weight="1"/>
@@ -18,7 +19,7 @@
         <Button style="@style/KeyStyle" android:text="Δ" android:tag="916" android:layout_weight="1"/>
     </LinearLayout>
 
-    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal">
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:splitMotionEvents="true">
         <Button style="@style/KeyStyle" android:text="£" android:tag="163" android:layout_weight="1"/>
         <Button style="@style/KeyStyle" android:text="¢" android:tag="162" android:layout_weight="1"/>
         <Button style="@style/KeyStyle" android:text="€" android:tag="8364" android:layout_weight="1"/>
@@ -31,7 +32,7 @@
         <Button style="@style/KeyStyle" android:text="\" android:tag="92" android:layout_weight="1"/>
     </LinearLayout>
 
-    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal">
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:splitMotionEvents="true">
         <Button style="@style/SpecialKeyStyle" android:text="\?123" android:tag="-6" android:layout_weight="1.5"/>
         <Button style="@style/KeyStyle" android:text="[" android:tag="91" android:layout_weight="1"/>
         <Button style="@style/KeyStyle" android:text="]" android:tag="93" android:layout_weight="1"/>
@@ -43,7 +44,7 @@
         <Button style="@style/SpecialKeyStyle" android:text="⬅️" android:tag="-5" android:layout_weight="1.5"/>
     </LinearLayout>
 
-    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal">
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:splitMotionEvents="true">
         <Button style="@style/SpecialKeyStyle" android:text="ABC" android:tag="-2" android:layout_weight="2"/>
         <Button style="@style/SpecialKeyStyle" android:text="🌐" android:tag="-100" android:layout_weight="1"/>
         <Button style="@style/KeyStyle" android:text=" " android:tag="32" android:layout_weight="4"/>

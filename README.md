@@ -22,7 +22,11 @@ Nusa Keyboard is an Android keyboard application designed to support Wikipedia v
 
 ## Version History
 
-### Version 0.1.0 (Code 1)
+### Version 0.1.1
+- Improve haptic feedback
+- Improve key responsiveness
+
+### Version 0.1.0
 - **Initial Nusa Keyboard Rebrand Release**:
   - Rebranded application package to `io.github.sslaia.nusakeyboard`.
   - Added layout preferences in Settings allowing users to choose Nias or Indonesian as their default typing language.
